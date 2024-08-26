@@ -58,7 +58,6 @@ public class MenuCuentas {
                     break;
 
                 case 4:
-                    System.out.println("Saliendo del sistema");
                     break;
                 default:
                     System.out.println("Opcion no valida, debe ingresar un numero del 1 al 4.....");

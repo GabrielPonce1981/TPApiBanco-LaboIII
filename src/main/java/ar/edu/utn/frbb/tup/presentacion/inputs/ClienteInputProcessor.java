@@ -12,13 +12,13 @@ public class ClienteInputProcessor extends BaseInputProcessor{
     ValidacionesServicios validar = new ValidacionesServicios();
     //private static List<Cliente> clientes = new ArrayList<>();
 
-    public Cliente ingresarCliente() {
+    public Cliente ingresarCliente(long dni) {
 
         // Ingreso de datos del Cliente
         Cliente cliente = new Cliente();
         clearScreen();
 
-        cliente.setDni(ingreseDni());
+        cliente.setDni(dni);
         cliente.setNombre(ingreseNombre());
         cliente.setApellido(ingreseApellido());
         cliente.setFechaNacimiento(ingreseFechaNacimiento());
@@ -69,7 +69,7 @@ public class ClienteInputProcessor extends BaseInputProcessor{
     public TipoPersona ingreseTipoPersona(){
         System.out.print("Ingrese el tipo de persona Física(F) o Jurídica(J):");
         String tipoPersonaStr = scanner.nextLine().toUpperCase();
-        while (!tipoPersonaStr.equals("F") && !tipoPersonaStr.equals("J")){
+        while (!validar.validarTipoPersona(tipoPersonaStr)){
             System.out.println("Tipo de persona inválido.");
             System.out.print("Ingrese F para FISICA o J para JURIDICA: ");
             tipoPersonaStr = scanner.nextLine().toUpperCase();

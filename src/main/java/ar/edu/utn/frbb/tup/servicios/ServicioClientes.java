@@ -46,7 +46,7 @@ public class ServicioClientes {
 
         Cliente cliente = null;
         if (!encontrado) {
-            cliente = inputcliente.ingresarCliente();
+            cliente = inputcliente.ingresarCliente(dni);
             clientes.add(cliente);//agregamos cliente
             System.out.println("Cliente: " + cliente.getNombre());
         } else {
