@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.servicios;
 import ar.edu.utn.frbb.tup.modelo.Cliente;
 import ar.edu.utn.frbb.tup.modelo.Cuenta;
 import ar.edu.utn.frbb.tup.modelo.Movimiento;
+import ar.edu.utn.frbb.tup.modelo.Prestamo;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
 import ar.edu.utn.frbb.tup.presentacion.ValidacionesPresentacion;
@@ -228,6 +229,10 @@ public class ServicioMovimientos {
                 }
             }
         }
+    }
+
+    public void solicitarPrestamo (Cliente cliente, Prestamo prestamo){
+
     }
 
 }

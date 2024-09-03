@@ -1,3 +1,5 @@
 Falta:
 
-- Ver validacion de tipo de persona
+- Endpoints
+- Testeos Unitarios
+- Excepciones

@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 public class MenuMovimientosCuentas {
 
+    ValidacionesPresentacion validar = new ValidacionesPresentacion();
+
     public void gestionMovimientos (Banco banco) throws ClientesVaciosException {
 
         ClienteDao clienteDao = new ClienteDao();
@@ -20,6 +22,7 @@ public class MenuMovimientosCuentas {
 
 //        List<Cliente> clientes = banco.getClientes();// traemos la lista de clientes del banco
         Scanner entrada = new Scanner(System.in);
+        String opcionstr;
         int opcion;
 
         do{
@@ -31,8 +34,13 @@ public class MenuMovimientosCuentas {
             System.out.println("----------------5. Volver al menu anterior----------------");
             System.out.println("----------------------------------------------------------");
 
-            System.out.print("Ingrese una opcion: ");
-            opcion = entrada.nextInt();
+            do{
+                System.out.print("Ingrese una opcion: ");
+                opcionstr = entrada.nextLine();
+
+            }while(!validar.esEntero(opcionstr));
+
+            opcion = Integer.parseInt(opcionstr);
 
             switch (opcion){
                 case 1:
