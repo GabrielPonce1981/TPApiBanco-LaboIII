@@ -1,12 +1,12 @@
 package ar.edu.utn.frbb.tup.servicios;
 
-import ar.edu.utn.frbb.tup.modelo.Cuenta;
 import ar.edu.utn.frbb.tup.modelo.TipoMoneda;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Set;
 
+@Service
 public class ValidacionesServicios {
     public boolean esMayordeEdad(String fecha) {
         boolean esMayordeEdad = false;
@@ -53,7 +53,7 @@ public class ValidacionesServicios {
         }
     }
 
-    public boolean validarModenaDestino(TipoMoneda tipoMonedaOrigen, TipoMoneda tipoMonedaDestino) {
+    public boolean validarMonedaDestino(TipoMoneda tipoMonedaOrigen, TipoMoneda tipoMonedaDestino) {
         return tipoMonedaOrigen == tipoMonedaDestino;
     }
 

@@ -75,4 +75,4 @@ public class ValidacionesPresentacion {
     }
 }
 
-// validar nombre, apellido, fecha vacia, direccion, banco
+

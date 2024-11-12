@@ -3,7 +3,6 @@ package ar.edu.utn.frbb.tup.servicios;
 import ar.edu.utn.frbb.tup.modelo.Cliente;
 import ar.edu.utn.frbb.tup.modelo.Cuenta;
 import ar.edu.utn.frbb.tup.modelo.Movimiento;
-import ar.edu.utn.frbb.tup.modelo.Prestamo;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
 import ar.edu.utn.frbb.tup.presentacion.ValidacionesPresentacion;
@@ -197,7 +196,7 @@ public class ServicioMovimientos {
                     Cuenta cuentaDestino = cuentaDao.findCuenta(Long.parseLong(cbuDestino));
                     if (cuentaDestino == null) {
                         System.out.println("Cuenta destino no encontrada");
-                    } else if (validar.validarModenaDestino(cuentaOrigen.getTipoMoneda(),cuentaDestino.getTipoMoneda())) {
+                    } else if (validar.validarMonedaDestino(cuentaOrigen.getTipoMoneda(),cuentaDestino.getTipoMoneda())) {
                         double monto;
                         do {
                             System.out.print("Ingrese el monto a transferir: ");
@@ -229,10 +228,6 @@ public class ServicioMovimientos {
                 }
             }
         }
-    }
-
-    public void solicitarPrestamo (Cliente cliente, Prestamo prestamo){
-
     }
 
 }

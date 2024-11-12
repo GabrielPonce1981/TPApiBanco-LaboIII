@@ -45,7 +45,6 @@ public class ClienteDao extends BaseDao<Cliente>{
     }
 
     public Cliente findCliente(Long dni){
-
         return findInfo(dni, RUTA_ARCHIVO);
     }
 
