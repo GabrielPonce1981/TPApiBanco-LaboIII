@@ -1,14 +1,17 @@
 package ar.edu.utn.frbb.tup.servicios;
+
 import ar.edu.utn.frbb.tup.excepciones.ClienteExistenteException;
 import ar.edu.utn.frbb.tup.excepciones.ClienteMenorDeEdadException;
-import ar.edu.utn.frbb.tup.modelos.Cliente;
-import ar.edu.utn.frbb.tup.modelos.TipoMoneda;
-import ar.edu.utn.frbb.tup.modelos.TipoPersona;
+import ar.edu.utn.frbb.tup.excepciones.TipoCuentaExistenteException;
+import ar.edu.utn.frbb.tup.modelos.*;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
+import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.ClienteDto;
+import ar.edu.utn.frbb.tup.presentacion.DTOs.CuentaDto;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 //Validaciones de clientes, cuentas y movimientos
 
@@ -50,17 +53,31 @@ public class ValidacionesServicios {
         if (clienteDto.getFechaNacimiento() == null) throw new IllegalArgumentException("Error: Ingrese una fecha de nacimiento");
         if (clienteDto.getBanco() == null || clienteDto.getBanco().isEmpty()) throw new IllegalArgumentException("Error: Ingrese un banco");
         if (clienteDto.getDni() == null) throw new IllegalArgumentException("Error: debe ingresar un dni");
-        if (clienteDto.getTipoPersona() == null) throw new IllegalArgumentException("Error: Ingrese un tipo de persona");
+        if (clienteDto.getTipoPersona() == null || clienteDto.getTipoPersona().isEmpty()) throw new IllegalArgumentException("Error: Ingrese un tipo de persona");
     }
 
+    //validacion de cuenta
+    public void validarCuenta(CuentaDto cuentaDto) {
+        if(cuentaDto.getDniTitular() == null) throw new IllegalArgumentException("Error: debe ingresar un dni");
+        if(cuentaDto.getDniTitular() < 1000000 || cuentaDto.getDniTitular() > 99999999)
+            throw new IllegalArgumentException("Error: el dni debe tener entre 7 y 8 digitos");
+        if (cuentaDto.getTipoMoneda() == null) throw new IllegalArgumentException("Error: debe ingresar una moneda");
+        if (cuentaDto.getTipoCuenta() == null)
+            throw new IllegalArgumentException("Error: debe ingresar un tipo de cuenta");
 
-    public void validarTipoPersona(TipoPersona tipoPersona) {
-        if (!Objects.equals(tipoPersona, "F") && !Objects.equals(tipoPersona, "J")) {
-            throw new IllegalArgumentException("Error: El tipo de persona debe ser 'F' para Fisica o 'J' para Juridica");
+    }
+
+    //validar el tipo de moneda y tipo de cuenta para que no se repitan
+    //verificar si un cliente ya tiene una cuenta con el mismo tipo de moneda (TipoMoneda) y tipo de cuenta (TipoCuenta) antes de permitir que se cree una nueva.
+    public void validarTipoMonedaCuenta(TipoCuenta tipoCuenta, TipoMoneda tipoMoneda, Long dniTitular) throws TipoCuentaExistenteException {
+        CuentaDao cuentaDao = new CuentaDao();
+        Set<Cuenta> cuentas = cuentaDao.findAllCuentasDelCliente(dniTitular);
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.getTipoMoneda() == tipoMoneda && cuenta.getTipoCuenta() == tipoCuenta) {
+                throw new TipoCuentaExistenteException("Ya existe una cuenta con el tipo de moneda y tipo de cuenta ingresados");
+            }
         }
     }
-
-
 
     //validacion cuenta destino correcta
     public boolean validarCuentaDestino(String cuentaOrigen, String cuentaDestino) {

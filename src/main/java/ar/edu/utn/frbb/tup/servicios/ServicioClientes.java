@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class ServicioClientes {
 
-    private List<Cliente> clientes;
+    //private List<Cliente> clientes;
     ValidacionesServicios validar = new ValidacionesServicios();
     ClienteDao clienteDao = new ClienteDao();
     CuentaDao cuentaDao = new CuentaDao();
@@ -23,6 +23,7 @@ public class ServicioClientes {
 
 
     public List<Cliente> mostrarClientes() throws ClientesVaciosException {
+        List<Cliente> clientes = clienteDao.findAllClientes();
         clienteDao.findAllClientes();
         return clientes;
     }
@@ -37,7 +38,7 @@ public class ServicioClientes {
         return cliente;
     }
 
-    public Cliente eliminarCliente(Long dni) throws ClienteNoEncontradoException {
+    public Cliente eliminarCliente(long dni) throws ClienteNoEncontradoException {
         Cliente clienteEliminado = buscarCliente(dni);
 
         //Elimino el cliente

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class CuentaDao extends BaseDao<Cuenta> {
@@ -23,13 +25,11 @@ public class CuentaDao extends BaseDao<Cuenta> {
 
     public void saveCuenta(Cuenta cuenta){
         String infoAguardar = cuenta.getCbu() + "," + cuenta.getDniTitular() + "," + cuenta.getTipoCuenta() + "," + cuenta.getTipoMoneda() + "," + cuenta.getAlias() + "," + cuenta.getFechaCreacion() + "," + cuenta.getSaldo();
-
         saveInfo(infoAguardar, RUTA_ARCHIVO);
     }
 
     public void deleteCuenta(long CBU){
         deleteInfo(CBU, RUTA_ARCHIVO);
-
     }
 
     public Cuenta findCuenta(long CBU){
@@ -38,11 +38,10 @@ public class CuentaDao extends BaseDao<Cuenta> {
 
     public List<Cuenta> findAllCuentas() throws CuentasVaciasException{
         List<Cuenta> cuentas = findAllInfo(RUTA_ARCHIVO);
-
-        if (cuentas.isEmpty()){ //Si la lista esta vacia significa que no hay clientes registrados
+        //Si la lista esta vacia significa que no hay clientes registrados
+        if (cuentas.isEmpty()){
             throw new CuentasVaciasException("No hay cuentas registradas");
         }
-
         return cuentas;
     }
 
@@ -102,6 +101,34 @@ public class CuentaDao extends BaseDao<Cuenta> {
         return CvuRelacionados;
 
     }
+
+    public Set<Cuenta> findAllCuentasDelCliente(long dni) {
+
+        Set<Cuenta> cuentasDelCliente = new HashSet<>();
+        try {
+            File file = new File(RUTA_ARCHIVO);
+
+            FileReader fileReader = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fileReader);
+
+            //Primero agrego el encabezado al contenido,
+            String linea = reader.readLine();
+
+            while ((linea = reader.readLine()) != null) {
+                String[] datos = linea.split(",");
+
+                if (Long.parseLong(datos[1]) == dni) {
+                    cuentasDelCliente.add(parseDatosToObjet(datos));
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return cuentasDelCliente;
+    }
+
 
     //Funcion para parsear los datos leidos del archivo a un objeto tipo 'Cuenta'
     @Override

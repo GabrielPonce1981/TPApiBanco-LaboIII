@@ -20,14 +20,11 @@ public class ClienteDao extends BaseDao<Cliente>{
     }
 
     public void saveCliente(Cliente cliente) throws ClienteExistenteException {
-
         String guardarCliente = cliente.getDni() + "," + cliente.getNombre() + "," + cliente.getApellido() + "," + cliente.getDomicilio() + "," + cliente.getFechaNacimiento() + "," + cliente.getBanco() + "," + cliente.getTipoPersona() + "," + cliente.getFechaAlta();
-
         saveInfo(guardarCliente, RUTA_ARCHIVO);
     }
 
     public void deleteCliente(Long dni) throws ClienteNoEncontradoException{
-
         deleteInfo(dni, RUTA_ARCHIVO);
     }
 
