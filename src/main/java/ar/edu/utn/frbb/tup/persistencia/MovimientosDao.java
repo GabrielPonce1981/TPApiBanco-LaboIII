@@ -1,6 +1,6 @@
 package ar.edu.utn.frbb.tup.persistencia;
 
-import ar.edu.utn.frbb.tup.modelo.Movimiento;
+import ar.edu.utn.frbb.tup.modelos.Movimiento;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;

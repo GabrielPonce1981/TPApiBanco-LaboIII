@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.1</version>
+		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ar.edu.utn.frbb.tup</groupId>
-	<artifactId>proyecto</artifactId>
+	<artifactId>ApiBanco-LaboIII</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>proyecto</name>
-	<description>Projecto Banco con Spring Boot</description>
+	<name>ApiBanco-LaboIII</name>
+	<description>Proyecto con Spring</description>
 	<url/>
 	<licenses>
 		<license/>

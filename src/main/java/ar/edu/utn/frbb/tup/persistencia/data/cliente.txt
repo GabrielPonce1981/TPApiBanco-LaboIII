@@ -1,2 +1,4 @@
 DNI, Nombre, Apellido, Domicilio, Fecha Nacimiento, Banco, Tipo Persona, Fecha alta
 32563401,Daniel,D'Onofrio,Calle 123.,1986-06-12,Provincia,PERSONA_FISICA,2024-07-19
+27654321,Juan,Perez,Calle 456.,1990-03-25,Provincia,PERSONA_FISICA,2024-07-19
+12345678,Maria,Gomez,Calle 789.,1985-11-10,Provincia,PERSONA_FISICA,2024-07-19

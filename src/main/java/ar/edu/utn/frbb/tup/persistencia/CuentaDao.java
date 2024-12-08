@@ -1,10 +1,10 @@
 package ar.edu.utn.frbb.tup.persistencia;
 
-import ar.edu.utn.frbb.tup.modelo.Cliente;
-import ar.edu.utn.frbb.tup.modelo.Cuenta;
-import ar.edu.utn.frbb.tup.modelo.TipoCuenta;
+import ar.edu.utn.frbb.tup.modelos.Cliente;
+import ar.edu.utn.frbb.tup.modelos.Cuenta;
+import ar.edu.utn.frbb.tup.modelos.TipoCuenta;
 import ar.edu.utn.frbb.tup.excepciones.CuentasVaciasException;
-import ar.edu.utn.frbb.tup.modelo.TipoMoneda;
+import ar.edu.utn.frbb.tup.modelos.TipoMoneda;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public class CuentaDao extends BaseDao<Cuenta> {
     private final String RUTA_ARCHIVO = "src/main/java/ar/edu/utn/frbb/tup/persistencia/data/cuentas.txt";
+
     public void inicializarCuentas(){
         String encabezado = "CBU, Cliente, Tipo de cuenta, Moneda, Alias, Fecha de creacion, Saldo";
         inicializarArchivo(encabezado, RUTA_ARCHIVO);

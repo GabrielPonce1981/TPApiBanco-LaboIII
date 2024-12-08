@@ -7,13 +7,15 @@ import java.util.List;
 public abstract class BaseDao<T> {
 
     public void inicializarArchivo(String encabezado, String rutaArchivo){
+        //encabezado: Es el encabezado del archivo, el nombre de las columnas donde se guardan los datos
+        //rutaArchivo: Es la ruta del archivo donde escribiran los datos
         PrintWriter writer = null;
 
         try {
             File archivo = new File(rutaArchivo);
 
             if (!archivo.exists()) {
-                //Si no existe, lo creo y guardo el Encabezado para saber el orden de los datos
+                //Verifica si el archivo especificado existe. Si no, lo crea e incluye un encabezado, para el orden de los datos
                 FileWriter fileWriter = new FileWriter(rutaArchivo, true);
                 writer = new PrintWriter(fileWriter);
                 writer.println(encabezado);
@@ -44,9 +46,9 @@ public abstract class BaseDao<T> {
 
     //Id se refiere al identificador a cual linea borrar, ya sea DNI o CVU
     public void deleteInfo(long id, String rutaArchivo){
-        //Lo que hace deleteInfo es leer todoo el archivo, guardarlo en una variable y reescribirlo exceputando la linea que tiene que eliminar
+        //Lo que hace deleteInfo es leer todo el archivo, guardarlo en una variable y reescribirlo exceputando la linea que tiene que eliminar
         try {
-            StringBuilder contenido = new StringBuilder(); //Creo el contenido para guardar todoo lo leido
+            StringBuilder contenido = new StringBuilder(); //Creo el contenido para guardar todo lo leido
 
             FileReader fileReader = new FileReader(rutaArchivo);
             BufferedReader reader = new BufferedReader(fileReader);

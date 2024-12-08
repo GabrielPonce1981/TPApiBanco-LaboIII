@@ -5,4 +5,3 @@ public class ClienteNoEncontradoException extends Throwable {
         super(message);
     }
 }
-
