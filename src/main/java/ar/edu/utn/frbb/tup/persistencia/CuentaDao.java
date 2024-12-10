@@ -45,6 +45,7 @@ public class CuentaDao extends BaseDao<Cuenta> {
         return cuentas;
     }
 
+
     public Cuenta findCuentaDelCliente(long cbu, long dni){
         //Funcion para encontrar la cuenta del cliente, se hace para que el usuario SOLO pueda eliminar la cuenta del cliente que le pertenece
         try {
