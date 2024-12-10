@@ -57,7 +57,7 @@ public class ControladorOperaciones {
 
     //Transferencia
     @PostMapping("/transferencia")
-    public ResponseEntity<Object> realizarTransferencia(@RequestBody TransferenciaDto transferenciaDto) {
+    public ResponseEntity<Object> realizarTransferencia(@RequestBody TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException {
         try {
             validacionesPresentacion.validarTransferencia(transferenciaDto);
             validacionesPresentacion.validarIngresosDeCbu(transferenciaDto.getCbuOrigen(), transferenciaDto.getCbuDestino());

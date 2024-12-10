@@ -1,0 +1,1 @@
+CBU Origen, Fecha de operacion, Hora de operacion, Tipo de operacion, Monto

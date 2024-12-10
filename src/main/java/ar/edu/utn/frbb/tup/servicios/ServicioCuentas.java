@@ -103,7 +103,6 @@ public class ServicioCuentas {
     }
 
     public Cuenta eliminarCuenta(Long dni, Long cbu) throws ClienteNoEncontradoException, CuentasVaciasException, CuentaNoEncontradaException {
-
         //Valido que exista el cliente, si no lanza excepcion
         Cliente cliente = clienteDao.findCliente(dni);
 
@@ -117,7 +116,7 @@ public class ServicioCuentas {
             throw new CuentasVaciasException("No hay cuentas asociadas al cliente con DNI: " + dni);
         }
 
-        //Funcion que devuelve la cuenta encontrada o vuelve null si no lo encontro. Solo devuelve las cuentas que tiene asocida el cliente
+        //Funcion que devuelve la cuenta encontrada o null si no lo encontro. Solo devuelve las cuentas que tiene asocida el cliente
         Cuenta cuenta = cuentaDao.findCuentaDelCliente(cbu, dni);
 
         if (cuenta == null) {

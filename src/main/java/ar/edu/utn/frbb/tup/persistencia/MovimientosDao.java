@@ -34,7 +34,7 @@ public class MovimientosDao extends BaseDao<Movimiento>{
         deleteInfo(cvu, RUTA_ARCHIVO);
     }
 
-    public List<Movimiento> findMovimientos(long CVU){
+    public List<Movimiento> findMovimientos(Long CVU){
         List<Movimiento> movimientos = new ArrayList<>();
         try {
 

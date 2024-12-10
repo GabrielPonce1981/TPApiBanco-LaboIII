@@ -34,9 +34,7 @@ public abstract class BaseDao<T> {
         //En el try abre directamente el archivo, y cuando termina cierra automaticamente el recurso
 
         try (FileWriter archivo = new FileWriter(rutaArchivo, true);){
-
             PrintWriter writer = new PrintWriter(archivo);
-
             writer.println(info);
         }
         catch (IOException e) {
@@ -46,9 +44,9 @@ public abstract class BaseDao<T> {
 
     //Id se refiere al identificador a cual linea borrar, ya sea DNI o CVU
     public void deleteInfo(long id, String rutaArchivo){
-        //Lo que hace deleteInfo es leer todo el archivo, guardarlo en una variable y reescribirlo exceputando la linea que tiene que eliminar
+        //Lo que hace deleteInfo es leer todoo el archivo, guardarlo en una variable y reescribirlo exceputando la linea que tiene que eliminar
         try {
-            StringBuilder contenido = new StringBuilder(); //Creo el contenido para guardar todo lo leido
+            StringBuilder contenido = new StringBuilder(); //Creo el contenido para guardar todoo lo leido
 
             FileReader fileReader = new FileReader(rutaArchivo);
             BufferedReader reader = new BufferedReader(fileReader);

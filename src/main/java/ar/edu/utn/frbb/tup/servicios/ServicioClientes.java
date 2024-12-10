@@ -1,9 +1,6 @@
 package ar.edu.utn.frbb.tup.servicios;
 
-import ar.edu.utn.frbb.tup.excepciones.ClienteExistenteException;
-import ar.edu.utn.frbb.tup.excepciones.ClienteMenorDeEdadException;
-import ar.edu.utn.frbb.tup.excepciones.ClienteNoEncontradoException;
-import ar.edu.utn.frbb.tup.excepciones.ClientesVaciosException;
+import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.Cliente;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
@@ -15,17 +12,27 @@ import java.util.List;
 @Component
 public class ServicioClientes {
 
-    //private List<Cliente> clientes;
-    ValidacionesServicios validar = new ValidacionesServicios();
-    ClienteDao clienteDao = new ClienteDao();
-    CuentaDao cuentaDao = new CuentaDao();
-    MovimientosDao movimientosDao = new MovimientosDao();
+    private final ValidacionesServicios validacionesServicios;
+    private final ClienteDao clienteDao;
+    private final CuentaDao cuentaDao;
+    private final MovimientosDao movimientosDao;
 
 
-    public List<Cliente> mostrarClientes() throws ClientesVaciosException {
-        List<Cliente> clientes = clienteDao.findAllClientes();
-        clienteDao.findAllClientes();
-        return clientes;
+    public ServicioClientes(ValidacionesServicios validacionesServicios, ClienteDao clienteDao, CuentaDao cuentaDao, MovimientosDao movimientosDao) {
+        this.validacionesServicios = validacionesServicios;
+        this.clienteDao = clienteDao;
+        this.cuentaDao = cuentaDao;
+        this.movimientosDao = movimientosDao;
+    }
+
+//    public List<Cliente> mostrarClientes() throws ClientesVaciosException {
+//        List<Cliente> clientes = clienteDao.findAllClientes();
+//        clienteDao.findAllClientes();
+//        return clientes;
+//    }
+
+    public List<Cliente> mostrarClientes() throws ClientesVaciosException, CuentasVaciasException {
+        return clienteDao.findAllClientes();
     }
 
     public void inicializarClientes(){
@@ -33,6 +40,10 @@ public class ServicioClientes {
     }
 
     public Cliente crearCliente(ClienteDto clienteDto) throws ClienteExistenteException, ClienteMenorDeEdadException {
+        //realizo las validaciones antes de crear y guardar
+        validacionesServicios.validarDni(clienteDto.getDni());
+        validacionesServicios.validarClienteExistente(clienteDto);
+        validacionesServicios.esMayordeEdad(clienteDto.getFechaNacimiento());
         Cliente cliente = new Cliente(clienteDto);
         clienteDao.saveCliente(cliente);
         return cliente;
@@ -46,7 +57,6 @@ public class ServicioClientes {
 
         //Elimino las relaciones que tiene con las Cuentas y Movimientos
         List<Long> cbuEliminar = cuentaDao.getRelacionesDni(clienteEliminado.getDni());
-        //Obtengo lista de todos los CBUs a eliminar
 
         for (Long cbu : cbuEliminar){
             cuentaDao.deleteCuenta(cbu);
