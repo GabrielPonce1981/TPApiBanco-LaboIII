@@ -1,6 +1,5 @@
 package ar.edu.utn.frbb.tup.persistencia;
 
-import ar.edu.utn.frbb.tup.modelos.Cliente;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.modelos.TipoCuenta;
 import ar.edu.utn.frbb.tup.excepciones.CuentasVaciasException;

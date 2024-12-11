@@ -1,22 +1,30 @@
 package ar.edu.utn.frbb.tup.servicios;
 
-import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaSinDineroException;
-import ar.edu.utn.frbb.tup.excepciones.MovimientosVaciosException;
+import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.modelos.Movimiento;
 import ar.edu.utn.frbb.tup.modelos.Operacion;
+import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
+import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class ServicioOperaciones {
-    ValidacionesServicios validar = new ValidacionesServicios();
-    CuentaDao cuentaDao = new CuentaDao();
-    MovimientosDao movimientosDao = new MovimientosDao();
+    ValidacionesServicios validar;
+    CuentaDao cuentaDao;
+    MovimientosDao movimientosDao;
+    ServicioTransferencias servicioTransferencias;
+
+    public ServicioOperaciones(ValidacionesServicios validar, CuentaDao cuentaDao, MovimientosDao movimientosDao, ServicioTransferencias servicioTransferencias) {
+        this.validar = validar;
+        this.cuentaDao = cuentaDao;
+        this.movimientosDao = movimientosDao;
+        this.servicioTransferencias = servicioTransferencias;
+    }
 
     public void inicializarMovimientos() {
         movimientosDao.inicializarMovimientos();
@@ -105,7 +113,10 @@ public class ServicioOperaciones {
                 .setTipoOperacion("Extraccion");
     }
 
-
+    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException {
+        // Delegamos a ServicioTransferencias
+        servicioTransferencias.realizarTransferencia(transferenciaDto);
+    }
 
 }
 

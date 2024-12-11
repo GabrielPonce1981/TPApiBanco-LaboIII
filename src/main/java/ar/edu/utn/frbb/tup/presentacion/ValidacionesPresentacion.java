@@ -11,11 +11,13 @@ import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.ClienteDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.CuentaDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Set;
 
+@Component
 public class ValidacionesPresentacion {
 
     //Debemos validar que el dni ingresado sea un numero, tenga entre 7 y 8 digitos y no sea 0

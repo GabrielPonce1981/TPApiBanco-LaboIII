@@ -21,15 +21,14 @@ import java.util.List;
 public class ControladorOperaciones {
     private final ServicioOperaciones servicioOperaciones;
     private final ServicioTransferencias servicioTransferencias;
+    private final ValidacionesPresentacion validacionesPresentacion;
 
-    public ControladorOperaciones(ServicioOperaciones servicioOperaciones, ServicioTransferencias servicioTransferencias) {
+    public ControladorOperaciones(ServicioOperaciones servicioOperaciones, ServicioTransferencias servicioTransferencias,ValidacionesPresentacion validacionesPresentacion) {
         this.servicioOperaciones = servicioOperaciones;
         this.servicioTransferencias = servicioTransferencias;
+        this.validacionesPresentacion = validacionesPresentacion;
         servicioOperaciones.inicializarMovimientos();
     }
-
-    ValidacionesPresentacion validacionesPresentacion = new ValidacionesPresentacion();
-
 
     //Consulta de saldo
     @GetMapping("/consultarsaldo/{cbu}")

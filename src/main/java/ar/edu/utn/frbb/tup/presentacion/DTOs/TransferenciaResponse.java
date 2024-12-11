@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.presentacion.DTOs;
 
+//creo clase para devolver un mensaje de respuesta a la transferencia
 public class TransferenciaResponse {
     private String mensaje;
     private String estado;

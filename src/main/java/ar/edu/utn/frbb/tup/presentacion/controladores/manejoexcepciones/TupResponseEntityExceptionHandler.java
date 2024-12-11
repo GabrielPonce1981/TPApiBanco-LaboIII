@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { ClienteNoEncontradoException.class,
-            ClienteMenorDeEdadException.class,
             ClientesVaciosException.class,ClienteNoEncontradoException.class,
             CuentaNoEncontradaException.class,
             CuentasVaciasException.class, MovimientosVaciosException.class})
