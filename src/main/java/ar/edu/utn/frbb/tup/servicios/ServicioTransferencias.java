@@ -29,31 +29,23 @@ public class ServicioTransferencias {
         this.clienteDao = clienteDao;
     }
 
-    public void inicializarTransferencias() {
-        movimientosDao.inicializarMovimientos();
-    }
-
     public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException {
         Cuenta cuentaOrigen = cuentaDao.findCuenta(transferenciaDto.getCbuOrigen());
         Cuenta cuentaDestino = cuentaDao.findCuenta(transferenciaDto.getCbuDestino());
 
         //validar que las cuentas existan y que el tipo de moneda sea el mismo
         validar.validarCuentasOrigenDestino(cuentaOrigen,cuentaDestino);
-        //validar que el saldo de la cuenta origen no sea menor al monto de la transferencia
-        validar.validarSaldoTransferencia(cuentaOrigen, transferenciaDto);
 
-        //traigo el monto para calcular el interes y lo agrego al monto de transferencia
-        double monto = transferenciaDto.getMonto();
-        double montoConIntereses = calcularInteresSobreTransferencia(transferenciaDto.getMonto(), cuentaOrigen.getTipoMoneda());
+        double montoConIntereses = procesarMontoConIntereses(transferenciaDto.getMonto(), cuentaOrigen.getTipoMoneda(), cuentaOrigen );
 
         //Busco los clientes para poder buscar el banco de cada cliente
         Cliente clienteOrigen = clienteDao.findCliente(cuentaOrigen.getDniTitular());
         Cliente clienteDestino = clienteDao.findCliente(cuentaDestino.getDniTitular());
 
         if (clienteOrigen.getBanco().equals(clienteDestino.getBanco())) {
-            generarTransferencia(cuentaOrigen, cuentaDestino, montoConIntereses, monto);
+            generarTransferencia(cuentaOrigen, cuentaDestino, montoConIntereses, transferenciaDto.getMonto());
         } else {
-            realizarServivioBanelco(cuentaOrigen, cuentaDestino, monto);
+            realizarServivioBanelco(cuentaOrigen,transferenciaDto.getMonto());
         }
     }
 
@@ -69,9 +61,11 @@ public class ServicioTransferencias {
         cuentaDestino.setSaldo(cuentaDestino.getSaldo() + monto);
 
         //Se registra los movimientos en ambas cuentas
-        movimientosDao.saveMovimiento("Transferencia enviada", montoConIntereses, cuentaOrigen.getCbu());
+        movimientosDao.saveMovimiento("Transferencia enviada", monto, cuentaOrigen.getCbu());
         movimientosDao.saveMovimiento("Transferencia recibida", monto, cuentaDestino.getCbu());
-
+        if (montoConIntereses - monto > 0) {
+            movimientosDao.saveMovimiento("Comision aplicada", montoConIntereses - monto, cuentaOrigen.getCbu());
+        }
         //Se guardan las cuentas actualizadas en la base de datos
         cuentaDao.saveCuenta(cuentaOrigen);
         cuentaDao.saveCuenta(cuentaDestino);
@@ -79,18 +73,23 @@ public class ServicioTransferencias {
     }
 
 
-
     //realizo funcion para realizar el servicio banelco que simula la transferencia entre distintos bancos
-    public void realizarServivioBanelco(Cuenta cuentaOrigen, Cuenta cuentaDestino, double monto) throws TransferenciaFailException {
-        double limiteAtransferir = 2000000;
-        double comision = 0.02 * monto;
+    public void realizarServivioBanelco(Cuenta cuentaOrigen, double monto) throws TransferenciaFailException, CuentaSinDineroException {
+        final double limite_transferencia = 2000000;
+        final double Interes_Banelco = 0.02;
+
+        if(monto > limite_transferencia) {
+            throw new TransferenciaFailException("El monto supera el límite permitido para transferencias Banelco.");
+        }
+
+        double comision = monto * Interes_Banelco;
         double montoTotal = monto + comision;
 
-        if (cuentaOrigen.getSaldo() >= montoTotal && montoTotal <= limiteAtransferir) {
-            generarTransferencia(cuentaOrigen, cuentaDestino, montoTotal, monto);
-        }else{
-            throw new TransferenciaFailException("La transferencia falló, el monto es mayor al límite permitido.");
-        }
+        validar.validarSaldo(cuentaOrigen, montoTotal);
+        cuentaDao.deleteCuenta(cuentaOrigen.getCbu());
+        cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - montoTotal);
+        movimientosDao.saveMovimiento("Transferencia enviada (Banelco)", montoTotal, cuentaOrigen.getCbu());
+        cuentaDao.saveCuenta(cuentaOrigen);
 
     }
 
@@ -98,12 +97,18 @@ public class ServicioTransferencias {
     public double calcularInteresSobreTransferencia(double monto, TipoMoneda tipoMoneda) {
         //calcular el interés sobre la transferencia
         if (tipoMoneda == TipoMoneda.DOLARES && monto > 5000) {
-            return monto + (monto * 0.005) ;
+            return  monto * 0.005 ;
         } else if (tipoMoneda == TipoMoneda.PESOS && monto > 1000000) {
-            return monto + (monto * 0.2);
+            return monto * 0.2;
         }
-        // Si no se aplica interés, devolver el monto original
-        return monto;
+        return 0;
+    }
+
+    public double procesarMontoConIntereses(double monto, TipoMoneda tipoMoneda, Cuenta cuentaOrigen) throws CuentaSinDineroException {
+        double interes = calcularInteresSobreTransferencia(monto, tipoMoneda);
+        double montoConIntereses = monto + interes;
+        validar.validarSaldo(cuentaOrigen, montoConIntereses);
+        return montoConIntereses;
     }
 
 }

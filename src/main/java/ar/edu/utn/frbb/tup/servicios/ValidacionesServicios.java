@@ -5,17 +5,23 @@ import ar.edu.utn.frbb.tup.modelos.*;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.ClienteDto;
-import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
+import java.util.List;
 import java.util.Set;
 
 //Validaciones de clientes, cuentas y movimientos
 
 @Service
 public class ValidacionesServicios {
+    private final CuentaDao cuentaDao;
+    private final ClienteDao clienteDao;
 
+    public ValidacionesServicios(CuentaDao cuentaDao, ClienteDao clienteDao) {
+        this.cuentaDao = cuentaDao;
+        this.clienteDao = clienteDao;
+    }
     //Validaciones de cliente
 
     public void esMayordeEdad(LocalDate fechaNacimiento) throws ClienteMenorDeEdadException {
@@ -25,35 +31,42 @@ public class ValidacionesServicios {
         }
     }
 
-    //Debemos validar que el dni ingresado sea un numero, tenga entre 7 y 8 digitos y no sea 0
-    public void validarDni(Long dni) {
-        try {
-            if (dni <=0 || dni < 1000000 || dni > 99999999) {
-                throw new IllegalArgumentException("Error:el dni debe ser numero positivo y tener entre 7 y 8 digitos");
-            }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Error: el dni debe ser un numero");
-        }
-
-    }
-
+    //valido que el cliente no exista
     public void validarClienteExistente(ClienteDto clienteDto) throws ClienteExistenteException {
-        ClienteDao clienteDao = new ClienteDao();
         if (clienteDao.findCliente(clienteDto.getDni()) != null){
             throw new ClienteExistenteException("Ya existe un cliente con el dni ingresado");
+        }
+    }
+     public void validarClienteNoExistente(Long dni) throws ClienteNoEncontradoException {
+         if (clienteDao.findCliente(dni) == null) {
+             throw new ClienteNoEncontradoException("No se encontro el cliente con el DNI: " + dni);
+         }
+     }
+
+    //valido que el cliente no tenga cuentas asociadas antes de eliminarlo
+    public void validarClienteSinCuentas(Long dni) throws ClienteTieneCuentasException {
+        Cliente cliente = clienteDao.findCliente(dni);
+        if (cliente != null && !cliente.getCuentas().isEmpty()) {
+            throw new ClienteTieneCuentasException("El cliente tiene cuentas asociadas y no puede ser eliminado.");
         }
     }
 
     //validaciones de cuenta
 
     public void validarCuentaExistente(Long cbu) throws CuentaNoEncontradaException {
-        CuentaDao cuentaDao = new CuentaDao();
         Cuenta cuenta = cuentaDao.findCuenta(cbu);
         if (cuenta == null){
             throw new CuentaNoEncontradaException("No se encontro ninguna cuenta con el CBU: " + cbu);
         }
     }
 
+    //valido cuentas asociadas al cliente
+    public void validarCuentasAsociadasCLiente(Long dni) throws CuentasVaciasException {
+        List<Long> cuentasCbu = cuentaDao.getRelacionesDni(dni);
+        if (cuentasCbu.isEmpty()) {
+            throw new CuentasVaciasException("El cliente tiene cuentas asociadas y no puede ser eliminado.");
+        }
+    }
 
     //verificar si un cliente ya tiene una cuenta con el mismo tipo de moneda (TipoMoneda) y tipo de cuenta (TipoCuenta) antes de permitir que se cree una nueva.
     public void validarTipoMonedaCuenta(TipoCuenta tipoCuenta, TipoMoneda tipoMoneda, Long dniTitular) throws TipoCuentaExistenteException {
@@ -65,7 +78,6 @@ public class ValidacionesServicios {
             }
         }
     }
-
 
     //validar Operaciones
     //validar que las cuentas no sean de distinto tipo moneda y que no sean nulas
@@ -85,12 +97,11 @@ public class ValidacionesServicios {
         }
     }
 
-
-    //valido el saldo antes de realizar la transferencia
-    public void validarSaldoTransferencia(Cuenta cuentaOrigen, TransferenciaDto transferencia) throws CuentaSinDineroException {
-        if (transferencia.getMonto() < cuentaOrigen.getSaldo())
-            throw new CuentaSinDineroException("Error: no posee saldo suficiente para realizar la operacion, su saldo es de $" + cuentaOrigen.getSaldo());
+    public void validarSaldoDisponible(Long cbu) throws CuentaTieneSaldoException {
+        Cuenta cuenta = new CuentaDao().findCuenta(cbu);
+        if (cuenta.getSaldo() > 0){
+            throw new CuentaTieneSaldoException("La cuenta tiene saldo disponible, no puede ser eliminada");
+        }
     }
-
 
 }

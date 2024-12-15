@@ -33,24 +33,34 @@ public class ControladorOperaciones {
     //Consulta de saldo
     @GetMapping("/consultarsaldo/{cbu}")
     public ResponseEntity<Operacion> getConsultarSaldo(@PathVariable Long cbu) throws CuentaNoEncontradaException {
-        return new ResponseEntity<>(servicioOperaciones.consultarSaldo(cbu), HttpStatus.OK);
+        validacionesPresentacion.validarCbu(cbu);
+        Operacion operacion = servicioOperaciones.consultarSaldo(cbu);
+        if (operacion == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(operacion, HttpStatus.OK);
     }
 
     //Deposito
     @PutMapping("/deposito/{cbu}")
     public ResponseEntity<Operacion> getDeposito(@PathVariable Long cbu, @RequestParam double monto) throws CuentaNoEncontradaException {
+        validacionesPresentacion.validarCbu(cbu);
+        validacionesPresentacion.validarMonto(monto);
         return new ResponseEntity<>(servicioOperaciones.deposito(cbu, monto), HttpStatus.OK);
     }
 
     //Mostrar movimientos
     @GetMapping("/movimientos/{cbu}")
     public ResponseEntity<List<Movimiento>> getMostrarMovimientos(@PathVariable Long cbu) throws CuentaNoEncontradaException, MovimientosVaciosException {
+        validacionesPresentacion.validarCbu(cbu);
         return new ResponseEntity<>(servicioOperaciones.mostrarMovimientos(cbu), HttpStatus.OK);
     }
 
     //Retiro
     @PutMapping("/extraccion/{cbu}")
     public ResponseEntity<Operacion> getRetiro(@PathVariable Long cbu, @RequestParam double monto) throws CuentaNoEncontradaException, CuentaSinDineroException {
+        validacionesPresentacion.validarCbu(cbu);
+        validacionesPresentacion.validarMonto(monto);
         return new ResponseEntity<>(servicioOperaciones.extraccion(cbu, monto), HttpStatus.OK);
     }
 
@@ -65,9 +75,11 @@ public class ControladorOperaciones {
         } catch (IllegalArgumentException e) {
             // Validaciones de presentación fallidas
             return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", e.getMessage()), HttpStatus.BAD_REQUEST);
-        } catch (CuentaDistintaMonedaException | CuentaNoEncontradaException | CuentaSinDineroException | TransferenciaFailException e) {
+        } catch (CuentaDistintaMonedaException | CuentaSinDineroException | TransferenciaFailException e) {
             // Excepciones específicas del servicio
             return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", e.getMessage()), HttpStatus.BAD_REQUEST);
+        }catch (CuentaNoEncontradaException e){
+            return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", "CBU de origen no encontrado"), HttpStatus.NOT_FOUND);
         }
     }
 }

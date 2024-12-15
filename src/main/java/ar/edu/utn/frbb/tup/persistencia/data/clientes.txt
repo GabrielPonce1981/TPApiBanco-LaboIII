@@ -1,5 +1,5 @@
 DNI, Nombre, Apellido, Domicilio, Fecha Nacimiento, Banco, Tipo Persona, Fecha alta
-32563401,Daniel,D'Onofrio,Calle 123.,1986-06-12,Provincia,PERSONA_FISICA,2024-07-19
 27654321,Juan,Perez,Calle 456.,1990-03-25,Provincia,PERSONA_FISICA,2024-07-19
 87654321,Lucas,Laje,Calle Resero 25.,1992-03-25,Nacion,PERSONA_FISICA,2024-12-08
 3333333,Lucas,Lucanera,Calle Resero 28.,1993-03-25,Nacion,PERSONA_FISICA,2024-12-08
+12121212,Ester,Soto,Don Bosco 432.,1991-04-23,Provincia,PERSONA_FISICA,2024-12-11

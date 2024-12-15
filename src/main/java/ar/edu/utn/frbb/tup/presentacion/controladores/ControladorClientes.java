@@ -24,7 +24,7 @@ public class ControladorClientes {
 
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getClientes() throws ClientesVaciosException, CuentasVaciasException {
+    public ResponseEntity<List<Cliente>> getClientes() throws ClientesVaciosException{
         List<Cliente> clientes = servicioClientes.mostrarClientes();
         return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class ControladorClientes {
     }
 
     @DeleteMapping("/{dni}")
-    public ResponseEntity<Cliente> borrarCliente(@PathVariable Long dni) throws ClienteNoEncontradoException, ClientesVaciosException {
+    public ResponseEntity<Cliente> borrarCliente(@PathVariable Long dni) throws ClienteNoEncontradoException, ClientesVaciosException, ClienteTieneCuentasException {
         validacionesPresentacion.validarDni(dni);
         return new ResponseEntity<>(servicioClientes.eliminarCliente(dni), HttpStatus.OK);
     }

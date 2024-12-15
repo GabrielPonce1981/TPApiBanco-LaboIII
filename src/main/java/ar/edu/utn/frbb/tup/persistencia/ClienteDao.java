@@ -40,7 +40,10 @@ public class ClienteDao extends BaseDao<Cliente>{
 
     public Cliente findCliente(Long dni){
         Cliente cliente =  findInfo(dni, RUTA_ARCHIVO);
-
+        //chequar si el cliente existe
+        if (cliente == null) {
+            return null;
+        }
         // Recuperar las cuentas del cliente
         Set<Cuenta> cuentas = cuentaDao.findAllCuentasDelCliente(dni);
         if (!cuentas.isEmpty()) {
@@ -52,7 +55,8 @@ public class ClienteDao extends BaseDao<Cliente>{
     public List<Cliente> findAllClientes() throws ClientesVaciosException {
         List<Cliente> clientes = findAllInfo(RUTA_ARCHIVO);
 
-        if (clientes.isEmpty()) {//lista esta vacia - no hay clientes registrados
+        //lista esta vacia - no hay clientes registrados
+        if (clientes.isEmpty()) {
             throw new ClientesVaciosException("No hay clientes registrados");
         }
 

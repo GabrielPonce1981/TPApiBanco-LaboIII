@@ -1,10 +1,6 @@
 package ar.edu.utn.frbb.tup.presentacion.controladores;
 
-import ar.edu.utn.frbb.tup.excepciones.ClienteNoEncontradoException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaExistenteException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
-import ar.edu.utn.frbb.tup.excepciones.CuentasVaciasException;
-import ar.edu.utn.frbb.tup.excepciones.TipoCuentaExistenteException;
+import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.CuentaDto;
 import ar.edu.utn.frbb.tup.presentacion.ValidacionesPresentacion;
@@ -28,7 +24,7 @@ public class ControladorCuentas {
     }
 
     @GetMapping("/{dni}")
-    public ResponseEntity<Set<Cuenta>> mostrarCuentas(@PathVariable Long dni) throws CuentaNoEncontradaException, ClienteNoEncontradoException, CuentasVaciasException {
+    public ResponseEntity<Set<Cuenta>> mostrarCuentas(@PathVariable Long dni) throws CuentaNoEncontradaException, ClienteNoEncontradoException {
         validacionesPresentacion.validarDni(dni);
         return new ResponseEntity<>(servicioCuentas.mostrarCuentas(dni), HttpStatus.OK);
     }
@@ -36,19 +32,18 @@ public class ControladorCuentas {
     @PostMapping
     public ResponseEntity<Cuenta> crearCuenta(@RequestBody CuentaDto cuentaDto) throws TipoCuentaExistenteException, CuentaExistenteException, ClienteNoEncontradoException {
         validacionesPresentacion.validarCuenta(cuentaDto);
-        Cuenta cuenta = servicioCuentas.crearCuenta(cuentaDto);
-        return new ResponseEntity<>(cuenta, HttpStatus.CREATED);
+        return new ResponseEntity<>(servicioCuentas.crearCuenta(cuentaDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{dni}/{cbu}")
-    public ResponseEntity<Cuenta> actualizarAlias(@PathVariable Long dni, @PathVariable Long cbu, @RequestParam String alias) throws CuentaNoEncontradaException, ClienteNoEncontradoException, CuentaExistenteException, TipoCuentaExistenteException, CuentasVaciasException {
+    public ResponseEntity<Cuenta> actualizarAlias(@PathVariable Long dni, @PathVariable Long cbu, @RequestParam String alias) throws CuentaNoEncontradaException, ClienteNoEncontradoException, CuentasVaciasException {
         validacionesPresentacion.validarDni(dni);
         validacionesPresentacion.validarCbu(cbu);
         return new ResponseEntity<>(servicioCuentas.actualizarAlias(dni, cbu, alias), HttpStatus.OK);
     }
 
     @DeleteMapping("/{dni}/{cbu}")
-    public ResponseEntity<Cuenta> eliminarCuenta(@PathVariable Long dni, @PathVariable Long cbu) throws CuentasVaciasException, CuentaNoEncontradaException, ClienteNoEncontradoException {
+    public ResponseEntity<Cuenta> eliminarCuenta(@PathVariable Long dni, @PathVariable Long cbu) throws CuentasVaciasException, CuentaNoEncontradaException, ClienteNoEncontradoException, CuentaTieneSaldoException {
         validacionesPresentacion.validarDni(dni);
         validacionesPresentacion.validarCbu(cbu);
         return new ResponseEntity<>(servicioCuentas.eliminarCuenta(dni, cbu), HttpStatus.OK);

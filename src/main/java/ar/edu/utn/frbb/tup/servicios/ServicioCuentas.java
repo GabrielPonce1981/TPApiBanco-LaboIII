@@ -14,10 +14,18 @@ import java.util.Set;
 
 @Component
 public class ServicioCuentas {
-    ValidacionesServicios validar = new ValidacionesServicios();
-    CuentaDao cuentaDao = new CuentaDao();
-    ClienteDao clienteDao = new ClienteDao();
-    MovimientosDao movimientosDao = new MovimientosDao();
+    ValidacionesServicios validar;
+    CuentaDao cuentaDao;
+    ClienteDao clienteDao;
+    MovimientosDao movimientosDao;
+
+
+    public ServicioCuentas(ValidacionesServicios validar, CuentaDao cuentaDao, ClienteDao clienteDao, MovimientosDao movimientosDao) {
+        this.validar = validar;
+        this.cuentaDao = cuentaDao;
+        this.clienteDao = clienteDao;
+        this.movimientosDao = movimientosDao;
+    }
 
 
     public void inicializarCuentas() {
@@ -102,7 +110,7 @@ public class ServicioCuentas {
         return cuenta;
     }
 
-    public Cuenta eliminarCuenta(Long dni, Long cbu) throws ClienteNoEncontradoException, CuentasVaciasException, CuentaNoEncontradaException {
+    public Cuenta eliminarCuenta(Long dni, Long cbu) throws ClienteNoEncontradoException, CuentasVaciasException, CuentaNoEncontradaException, CuentaTieneSaldoException {
         //Valido que exista el cliente, si no lanza excepcion
         Cliente cliente = clienteDao.findCliente(dni);
 
@@ -122,6 +130,8 @@ public class ServicioCuentas {
         if (cuenta == null) {
             throw new CuentaNoEncontradaException("El cliente no tiene ninguna cuenta con el CBU: " + cbu);
         }
+
+        validar.validarSaldoDisponible(cbu);
 
         //Borro la cuenta y los movimientos de la misma
         cuentaDao.deleteCuenta(cbu);

@@ -31,7 +31,7 @@ public class ServicioClientes {
 //        return clientes;
 //    }
 
-    public List<Cliente> mostrarClientes() throws ClientesVaciosException, CuentasVaciasException {
+    public List<Cliente> mostrarClientes() throws ClientesVaciosException {
         return clienteDao.findAllClientes();
     }
 
@@ -41,7 +41,7 @@ public class ServicioClientes {
 
     public Cliente crearCliente(ClienteDto clienteDto) throws ClienteExistenteException, ClienteMenorDeEdadException {
         //realizo las validaciones antes de crear y guardar
-        validacionesServicios.validarDni(clienteDto.getDni());
+        //validacionesPresentacion.validarDni(clienteDto.getDni());
         validacionesServicios.validarClienteExistente(clienteDto);
         validacionesServicios.esMayordeEdad(clienteDto.getFechaNacimiento());
         Cliente cliente = new Cliente(clienteDto);
