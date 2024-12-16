@@ -1,11 +1,14 @@
 package ar.edu.utn.frbb.tup.presentacion.controladores;
 
 import ar.edu.utn.frbb.tup.excepciones.*;
+import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.modelos.Movimiento;
 import ar.edu.utn.frbb.tup.modelos.Operacion;
+import ar.edu.utn.frbb.tup.modelos.TipoMoneda;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaResponse;
 import ar.edu.utn.frbb.tup.presentacion.ValidacionesPresentacion;
+import ar.edu.utn.frbb.tup.servicios.ServicioCuentas;
 import ar.edu.utn.frbb.tup.servicios.ServicioOperaciones;
 import ar.edu.utn.frbb.tup.servicios.ServicioTransferencias;
 import org.springframework.http.HttpStatus;
@@ -22,11 +25,13 @@ public class ControladorOperaciones {
     private final ServicioOperaciones servicioOperaciones;
     private final ServicioTransferencias servicioTransferencias;
     private final ValidacionesPresentacion validacionesPresentacion;
+    private final ServicioCuentas servicioCuentas;
 
-    public ControladorOperaciones(ServicioOperaciones servicioOperaciones, ServicioTransferencias servicioTransferencias,ValidacionesPresentacion validacionesPresentacion) {
+    public ControladorOperaciones(ServicioOperaciones servicioOperaciones, ServicioTransferencias servicioTransferencias,ValidacionesPresentacion validacionesPresentacion,  ServicioCuentas servicioCuentas) {
         this.servicioOperaciones = servicioOperaciones;
         this.servicioTransferencias = servicioTransferencias;
         this.validacionesPresentacion = validacionesPresentacion;
+        this.servicioCuentas = servicioCuentas;
         servicioOperaciones.inicializarMovimientos();
     }
 
@@ -66,20 +71,17 @@ public class ControladorOperaciones {
 
     //Transferencia
     @PostMapping("/transferencia")
-    public ResponseEntity<Object> realizarTransferencia(@RequestBody TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException {
+    public ResponseEntity<Object> realizarTransferencia(@RequestBody TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
         try {
             validacionesPresentacion.validarTransferencia(transferenciaDto);
             validacionesPresentacion.validarIngresosDeCbu(transferenciaDto.getCbuOrigen(), transferenciaDto.getCbuDestino());
             servicioTransferencias.realizarTransferencia(transferenciaDto);
-            return new ResponseEntity<>(new TransferenciaResponse("EXITOSA", "Transferencia realizada con éxito"), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(new TransferenciaResponse("EXITOSA", "Transferencia realizada con exito"), HttpStatus.OK);
+        } catch (IllegalArgumentException | CuentaDistintaMonedaException | CuentaSinDineroException | TransferenciaFailException e) {
             // Validaciones de presentación fallidas
             return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", e.getMessage()), HttpStatus.BAD_REQUEST);
-        } catch (CuentaDistintaMonedaException | CuentaSinDineroException | TransferenciaFailException e) {
-            // Excepciones específicas del servicio
-            return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", e.getMessage()), HttpStatus.BAD_REQUEST);
-        }catch (CuentaNoEncontradaException e){
-            return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", "CBU de origen no encontrado"), HttpStatus.NOT_FOUND);
+        }catch ( CuentaNoEncontradaException | TransferenciaBancoNoDisponibleException e){
+            return new ResponseEntity<>(new TransferenciaResponse("FALLIDA", e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 }

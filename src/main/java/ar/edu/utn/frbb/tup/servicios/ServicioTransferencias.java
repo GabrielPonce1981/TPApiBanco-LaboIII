@@ -1,9 +1,6 @@
 package ar.edu.utn.frbb.tup.servicios;
 
-import ar.edu.utn.frbb.tup.excepciones.CuentaDistintaMonedaException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaSinDineroException;
-import ar.edu.utn.frbb.tup.excepciones.TransferenciaFailException;
+import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.*;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
@@ -21,20 +18,24 @@ public class ServicioTransferencias {
     private final CuentaDao cuentaDao;
     private final MovimientosDao movimientosDao;
     private final ClienteDao clienteDao;
-    ValidacionesServicios validar = new ValidacionesServicios();
+    private final ValidacionesServicios validar;
 
-    public ServicioTransferencias(CuentaDao cuentaDao, MovimientosDao movimientosDao, ClienteDao clienteDao) {
+    public ServicioTransferencias(CuentaDao cuentaDao, MovimientosDao movimientosDao, ClienteDao clienteDao, ValidacionesServicios validar) {
         this.cuentaDao = cuentaDao;
         this.movimientosDao = movimientosDao;
         this.clienteDao = clienteDao;
+        this.validar = validar;
     }
 
-    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException {
+    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
         Cuenta cuentaOrigen = cuentaDao.findCuenta(transferenciaDto.getCbuOrigen());
         Cuenta cuentaDestino = cuentaDao.findCuenta(transferenciaDto.getCbuDestino());
 
         //validar que las cuentas existan y que el tipo de moneda sea el mismo
         validar.validarCuentasOrigenDestino(cuentaOrigen,cuentaDestino);
+       // if(cuentaDestino.getTipoMoneda() != TipoMoneda.fromString(transferenciaDto.getTipoMoneda())) {
+       //     throw new CuentaDistintaMonedaException("Las cuentas deben ser de la misma moneda");
+       // }
 
         double montoConIntereses = procesarMontoConIntereses(transferenciaDto.getMonto(), cuentaOrigen.getTipoMoneda(), cuentaOrigen );
 
@@ -43,9 +44,12 @@ public class ServicioTransferencias {
         Cliente clienteDestino = clienteDao.findCliente(cuentaDestino.getDniTitular());
 
         if (clienteOrigen.getBanco().equals(clienteDestino.getBanco())) {
+            //realizo transferencia entre cuentas del mismo banco
             generarTransferencia(cuentaOrigen, cuentaDestino, montoConIntereses, transferenciaDto.getMonto());
-        } else {
+        } else if (esBancoDisponible(clienteDestino.getBanco())) {
             realizarServivioBanelco(cuentaOrigen,transferenciaDto.getMonto());
+        } else {
+            throw new TransferenciaBancoNoDisponibleException("La transferencia no se pudo realizar, el banco destino no esta disponible para el servico solicitado");
         }
     }
 
@@ -93,6 +97,9 @@ public class ServicioTransferencias {
 
     }
 
+    public boolean esBancoDisponible(String banco) {
+        return banco.equals("Nacion") || banco.equals("Provincia") || banco.equals("HSBC") || banco.equals("BBVA") || banco.equals("Santander");
+    }
 
     public double calcularInteresSobreTransferencia(double monto, TipoMoneda tipoMoneda) {
         //calcular el interés sobre la transferencia

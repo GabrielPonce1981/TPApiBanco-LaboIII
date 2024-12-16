@@ -11,6 +11,7 @@ import ar.edu.utn.frbb.tup.excepciones.CuentaExistenteException;
 import ar.edu.utn.frbb.tup.excepciones.TipoCuentaExistenteException;
 import ar.edu.utn.frbb.tup.excepciones.MovimientosVaciosException;
 import ar.edu.utn.frbb.tup.excepciones.TransferenciaFailException;
+import ar.edu.utn.frbb.tup.excepciones.TransferenciaBancoNoDisponibleException;
 import ar.edu.utn.frbb.tup.excepciones.*;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpHeaders;
@@ -28,9 +29,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { ClienteNoEncontradoException.class,
-            ClientesVaciosException.class, CuentaNoEncontradaException.class,
-            CuentasVaciasException.class, CuentaMonedaNoExisteException.class,
-            MovimientosVaciosException.class})
+            ClientesVaciosException.class,
+            CuentaNoEncontradaException.class,
+            CuentasVaciasException.class,
+            CuentaMonedaNoExisteException.class,
+            MovimientosVaciosException.class,
+            TransferenciaBancoNoDisponibleException.class
+    })
     protected ResponseEntity<Object> handleMateriaNotFound(Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
@@ -41,12 +46,17 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class,
-            ClienteExistenteException.class, ClienteMenorDeEdadException.class,
-            ClienteTieneCuentasException.class, CuentaMonedaNoExisteException.class,
-            TipoCuentaExistenteException.class, TipoMonedaExistenteException.class,
-            CuentaTieneSaldoException.class, CuentaExistenteException.class,
-            CuentaDistintaMonedaException.class, TransferenciaFailException.class,
-            CuentaSinDineroException.class,})
+            ClienteExistenteException.class,
+            ClienteMenorDeEdadException.class,
+            ClienteTieneCuentasException.class,
+            TipoCuentaExistenteException.class,
+            TipoMonedaExistenteException.class,
+            CuentaTieneSaldoException.class,
+            CuentaExistenteException.class,
+            CuentaDistintaMonedaException.class,
+            CuentaSinDineroException.class,
+            TransferenciaFailException.class,
+            })
     protected ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
@@ -79,13 +89,6 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
         if (!isNumericType) {
             return null; // Dejar que otras excepciones manejen este caso
         }
-
-
-//        if (ex instanceof MethodArgumentTypeMismatchException) {
-//            parameterName = ((MethodArgumentTypeMismatchException) ex).getName();
-//        } else if (ex instanceof ConversionFailedException) {
-//            parameterName = "un parámetro";
-//        }
 
         String exceptionMessage = String.format("Error: El valor ingresado para '%s' es invalido.", parameterName != null ? parameterName : "el campo");
 

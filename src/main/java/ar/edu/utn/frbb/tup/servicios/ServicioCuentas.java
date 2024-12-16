@@ -139,4 +139,12 @@ public class ServicioCuentas {
 
         return cuenta;
     }
+
+    public Cuenta buscarCuenta(Long cbu) throws CuentaNoEncontradaException {
+        Cuenta cuenta = cuentaDao.findCuenta(cbu);
+        if (cuenta == null) {
+            throw new CuentaNoEncontradaException("No se encontro la cuenta con el CBU: " + cbu);
+        }
+        return cuenta;
+    }
 }

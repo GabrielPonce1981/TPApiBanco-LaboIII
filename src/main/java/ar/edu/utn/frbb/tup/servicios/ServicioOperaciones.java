@@ -113,7 +113,7 @@ public class ServicioOperaciones {
                 .setTipoOperacion("Extraccion");
     }
 
-    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException {
+    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
         // Delegamos a ServicioTransferencias
         servicioTransferencias.realizarTransferencia(transferenciaDto);
     }

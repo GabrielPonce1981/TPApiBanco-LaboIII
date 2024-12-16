@@ -96,7 +96,7 @@ public class ValidacionesPresentacion {
         }
     }
 
-    public void validarTransferencia(TransferenciaDto transferenciaDto) throws IllegalArgumentException {
+    public void validarTransferencia(TransferenciaDto transferenciaDto) throws IllegalArgumentException{
         if (transferenciaDto.getCbuOrigen() == null) throw new IllegalArgumentException ("Error: debe ingresar un cbu de origen");
         if (transferenciaDto.getCbuDestino() == null) throw new IllegalArgumentException ("Error: debe ingresar un cbu de destino");
         if (transferenciaDto.getTipoMoneda() == null) throw new IllegalArgumentException ("Error: debe ingresar un tipo de moneda");

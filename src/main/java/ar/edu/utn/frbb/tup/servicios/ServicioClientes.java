@@ -25,12 +25,6 @@ public class ServicioClientes {
         this.movimientosDao = movimientosDao;
     }
 
-//    public List<Cliente> mostrarClientes() throws ClientesVaciosException {
-//        List<Cliente> clientes = clienteDao.findAllClientes();
-//        clienteDao.findAllClientes();
-//        return clientes;
-//    }
-
     public List<Cliente> mostrarClientes() throws ClientesVaciosException {
         return clienteDao.findAllClientes();
     }
@@ -49,8 +43,11 @@ public class ServicioClientes {
         return cliente;
     }
 
-    public Cliente eliminarCliente(long dni) throws ClienteNoEncontradoException {
+    public Cliente eliminarCliente(long dni) throws ClienteNoEncontradoException, ClienteTieneCuentasException {
         Cliente clienteEliminado = buscarCliente(dni);
+
+        //valido que el cliente a eliminar no tenga cuentas
+        validacionesServicios.validarClienteSinCuentas(dni);
 
         //Elimino el cliente
         clienteDao.deleteCliente(dni);

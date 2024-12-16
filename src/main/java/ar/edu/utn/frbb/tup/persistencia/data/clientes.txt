@@ -3,3 +3,4 @@ DNI, Nombre, Apellido, Domicilio, Fecha Nacimiento, Banco, Tipo Persona, Fecha a
 87654321,Lucas,Laje,Calle Resero 25.,1992-03-25,Nacion,PERSONA_FISICA,2024-12-08
 3333333,Lucas,Lucanera,Calle Resero 28.,1993-03-25,Nacion,PERSONA_FISICA,2024-12-08
 12121212,Ester,Soto,Don Bosco 432.,1991-04-23,Provincia,PERSONA_FISICA,2024-12-11
+98989898,Fernando,Garcia,Piedra Buena 1580,1990-08-14,Macro,PERSONA_FISICA,2024-12-15

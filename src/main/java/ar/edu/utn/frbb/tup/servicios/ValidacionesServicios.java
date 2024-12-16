@@ -86,9 +86,8 @@ public class ValidacionesServicios {
             throw new CuentaNoEncontradaException("Error: Una o ambas cuentas no existen.");
         }
         if (cuentaOrigen.getTipoMoneda() != cuentaDestino.getTipoMoneda()) {
-            throw new CuentaDistintaMonedaException("El CBU de origen no puede ser igual al de destino.");
+            throw new CuentaDistintaMonedaException("Las monedas de origen y destino deben coincidir.");
         }
-
     }
 
     public void validarSaldo(Cuenta cuenta, double monto) throws CuentaSinDineroException {
