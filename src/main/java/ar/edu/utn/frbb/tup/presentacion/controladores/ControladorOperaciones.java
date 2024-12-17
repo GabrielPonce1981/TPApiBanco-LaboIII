@@ -1,14 +1,12 @@
 package ar.edu.utn.frbb.tup.presentacion.controladores;
 
 import ar.edu.utn.frbb.tup.excepciones.*;
-import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.modelos.Movimiento;
 import ar.edu.utn.frbb.tup.modelos.Operacion;
 import ar.edu.utn.frbb.tup.modelos.TipoMoneda;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaResponse;
 import ar.edu.utn.frbb.tup.presentacion.ValidacionesPresentacion;
-import ar.edu.utn.frbb.tup.servicios.ServicioCuentas;
 import ar.edu.utn.frbb.tup.servicios.ServicioOperaciones;
 import ar.edu.utn.frbb.tup.servicios.ServicioTransferencias;
 import org.springframework.http.HttpStatus;
@@ -25,13 +23,11 @@ public class ControladorOperaciones {
     private final ServicioOperaciones servicioOperaciones;
     private final ServicioTransferencias servicioTransferencias;
     private final ValidacionesPresentacion validacionesPresentacion;
-    private final ServicioCuentas servicioCuentas;
 
-    public ControladorOperaciones(ServicioOperaciones servicioOperaciones, ServicioTransferencias servicioTransferencias,ValidacionesPresentacion validacionesPresentacion,  ServicioCuentas servicioCuentas) {
+    public ControladorOperaciones(ServicioOperaciones servicioOperaciones, ServicioTransferencias servicioTransferencias,ValidacionesPresentacion validacionesPresentacion) {
         this.servicioOperaciones = servicioOperaciones;
         this.servicioTransferencias = servicioTransferencias;
         this.validacionesPresentacion = validacionesPresentacion;
-        this.servicioCuentas = servicioCuentas;
         servicioOperaciones.inicializarMovimientos();
     }
 

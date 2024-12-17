@@ -63,7 +63,7 @@ public class ServicioClientes {
     }
 
     public Cliente buscarCliente(long dni) throws ClienteNoEncontradoException {
-        //Funcion que devuelve el cliente encontrado o vuelve Null si no lo encontro
+        //Funcion que devuelve el cliente encontrado o devuelve Null si no lo encontro
         Cliente cliente = clienteDao.findCliente(dni);
         if (cliente == null){
             throw new ClienteNoEncontradoException("No se encontro el cliente con el DNI: " + dni);

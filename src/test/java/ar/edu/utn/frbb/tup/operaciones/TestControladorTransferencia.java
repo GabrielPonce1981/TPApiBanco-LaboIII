@@ -40,7 +40,7 @@ class TestControladorTransferencia {
     }
 
     @Test
-    void testTransferenciaExitosa() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    void testTransferenciaExitosa() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException, ClienteNoEncontradoException {
         //preparo los datos de entrada
         Long cbuOrigen = 12345678L;
         Long cbuDestino = 87654321L;
@@ -78,7 +78,7 @@ class TestControladorTransferencia {
     }
 
     @Test
-    void testTransferenciaCuentaDistintaMoneda() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    void testTransferenciaCuentaDistintaMoneda() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException, ClienteNoEncontradoException {
         //preparo los datos de entrada
         Long cbuOrigen = 12345678L;
         Long cbuDestino = 87654321L;
@@ -114,7 +114,7 @@ class TestControladorTransferencia {
 
 
     @Test
-    void testTransferenciaCuentaNoEncontrada() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    void testTransferenciaCuentaNoEncontrada() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException, ClienteNoEncontradoException {
         Long cbuOrigen = 12345678L;
         Long cbuDestino = 87654321L;
         Double monto = 100.0;
@@ -147,7 +147,7 @@ class TestControladorTransferencia {
     }
 
     @Test
-    void testTransferenciaCuentaSinDinero() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    void testTransferenciaCuentaSinDinero() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException, ClienteNoEncontradoException {
         Long cbuOrigen = 12345678L;
         Long cbuDestino = 87654321L;
         Double monto = 100.0;
@@ -181,7 +181,7 @@ class TestControladorTransferencia {
     }
 
     @Test
-    void testTransferenciaMontoSuperaLimite() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    void testTransferenciaMontoSuperaLimite() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException, ClienteNoEncontradoException {
         TransferenciaDto transferenciaDto = new TransferenciaDto();
         transferenciaDto.setCbuOrigen(12345678L);
         transferenciaDto.setCbuDestino(87654321L);
@@ -212,7 +212,7 @@ class TestControladorTransferencia {
     }
 
     @Test
-    void testTransferenciaBancoNoDispobible() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    void testTransferenciaBancoNoDispobible() throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException, ClienteNoEncontradoException {
         TransferenciaDto transferenciaDto = new TransferenciaDto();
         transferenciaDto.setCbuOrigen(12345678L);
         transferenciaDto.setCbuDestino(87654321L);

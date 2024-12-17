@@ -4,7 +4,6 @@ import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.modelos.Movimiento;
 import ar.edu.utn.frbb.tup.modelos.Operacion;
-import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
@@ -31,9 +30,13 @@ public class ServicioOperaciones {
     }
 
     public Operacion consultarSaldo (Long cbu) throws CuentaNoEncontradaException {
-        Cuenta cuenta = cuentaDao.findCuenta(cbu);
         //Valido que la cuenta existe
         validar.validarCuentaExistente(cbu);
+
+        Cuenta cuenta = cuentaDao.findCuenta(cbu);
+        if (cuenta == null) {
+            throw new CuentaNoEncontradaException("La cuenta con el CBU especificado no existe.");
+        }
 
         //Tomo registro de la operacion que se hizo
         movimientosDao.saveMovimiento("Consulta", 0, cuenta.getCbu());
@@ -47,10 +50,15 @@ public class ServicioOperaciones {
 
     public Operacion deposito(Long cbu , double monto) throws CuentaNoEncontradaException {
 
-        Cuenta cuenta = cuentaDao.findCuenta(cbu);
-
         //Valido que la cuenta existe
         validar.validarCuentaExistente(cbu);
+
+        // Obtengo la cuenta
+        Cuenta cuenta = cuentaDao.findCuenta(cbu);
+        if (cuenta == null) {
+            throw new CuentaNoEncontradaException("La cuenta con el CBU especificado no existe.");
+        }
+
 
         //Borro la cuenta ya que va ser modificada
         cuentaDao.deleteCuenta(cuenta.getCbu());
@@ -72,10 +80,13 @@ public class ServicioOperaciones {
     }
 
     public List<Movimiento> mostrarMovimientos(Long cbu) throws MovimientosVaciosException, CuentaNoEncontradaException {
-        Cuenta cuenta = cuentaDao.findCuenta(cbu);
-
         //Valido que la cuenta existe
         validar.validarCuentaExistente(cbu);
+
+        Cuenta cuenta = cuentaDao.findCuenta(cbu);
+        if (cuenta == null) {
+            throw new CuentaNoEncontradaException("La cuenta con el CBU especificado no existe.");
+        }
 
         List<Movimiento> movimientos = movimientosDao.findMovimientos(cuenta.getCbu());
 
@@ -87,10 +98,14 @@ public class ServicioOperaciones {
     }
 
     public Operacion extraccion (Long cbu, double monto) throws CuentaNoEncontradaException, CuentaSinDineroException {
-        Cuenta cuenta = cuentaDao.findCuenta(cbu);
-
         //Valido si la cuenta existe
         validar.validarCuentaExistente(cbu);
+        //Obtengo la cuenta
+
+        Cuenta cuenta = cuentaDao.findCuenta(cbu);
+        if (cuenta == null) {
+            throw new CuentaNoEncontradaException("La cuenta con el CBU especificado no existe.");
+        }
 
         //Valido saldo
         validar.validarSaldo(cuenta, monto);
@@ -113,7 +128,7 @@ public class ServicioOperaciones {
                 .setTipoOperacion("Extraccion");
     }
 
-    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException{
         // Delegamos a ServicioTransferencias
         servicioTransferencias.realizarTransferencia(transferenciaDto);
     }

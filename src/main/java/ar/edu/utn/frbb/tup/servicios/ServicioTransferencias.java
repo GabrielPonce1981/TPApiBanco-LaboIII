@@ -5,7 +5,6 @@ import ar.edu.utn.frbb.tup.modelos.*;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
-import ar.edu.utn.frbb.tup.presentacion.DTOs.CuentaDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import org.springframework.stereotype.Component;
 
@@ -27,15 +26,15 @@ public class ServicioTransferencias {
         this.validar = validar;
     }
 
-    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException {
+    public void realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaDistintaMonedaException, CuentaNoEncontradaException, CuentaSinDineroException, TransferenciaFailException, TransferenciaBancoNoDisponibleException{
         Cuenta cuentaOrigen = cuentaDao.findCuenta(transferenciaDto.getCbuOrigen());
         Cuenta cuentaDestino = cuentaDao.findCuenta(transferenciaDto.getCbuDestino());
 
+        if(cuentaOrigen == null || cuentaDestino == null) {
+            throw new CuentaNoEncontradaException("Error: Una o ambas cuentas no existen.");
+        }
         //validar que las cuentas existan y que el tipo de moneda sea el mismo
         validar.validarCuentasOrigenDestino(cuentaOrigen,cuentaDestino);
-       // if(cuentaDestino.getTipoMoneda() != TipoMoneda.fromString(transferenciaDto.getTipoMoneda())) {
-       //     throw new CuentaDistintaMonedaException("Las cuentas deben ser de la misma moneda");
-       // }
 
         double montoConIntereses = procesarMontoConIntereses(transferenciaDto.getMonto(), cuentaOrigen.getTipoMoneda(), cuentaOrigen );
 
@@ -114,7 +113,9 @@ public class ServicioTransferencias {
     public double procesarMontoConIntereses(double monto, TipoMoneda tipoMoneda, Cuenta cuentaOrigen) throws CuentaSinDineroException {
         double interes = calcularInteresSobreTransferencia(monto, tipoMoneda);
         double montoConIntereses = monto + interes;
-        validar.validarSaldo(cuentaOrigen, montoConIntereses);
+        if (cuentaOrigen.getSaldo() < monto){
+            throw new CuentaSinDineroException("No posee saldo suficiente para realizar la operacion, su saldo es de $" + cuentaOrigen.getSaldo());
+        }
         return montoConIntereses;
     }
 

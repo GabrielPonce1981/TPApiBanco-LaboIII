@@ -30,6 +30,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 
     @ExceptionHandler(value = { ClienteNoEncontradoException.class,
             ClientesVaciosException.class,
+            ClienteNoEncontradoException.class,
             CuentaNoEncontradaException.class,
             CuentasVaciasException.class,
             CuentaMonedaNoExisteException.class,

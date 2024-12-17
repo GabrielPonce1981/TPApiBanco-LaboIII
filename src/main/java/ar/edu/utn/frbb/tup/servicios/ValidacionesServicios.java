@@ -64,13 +64,12 @@ public class ValidacionesServicios {
     public void validarCuentasAsociadasCLiente(Long dni) throws CuentasVaciasException {
         List<Long> cuentasCbu = cuentaDao.getRelacionesDni(dni);
         if (cuentasCbu.isEmpty()) {
-            throw new CuentasVaciasException("El cliente tiene cuentas asociadas y no puede ser eliminado.");
+            throw new CuentasVaciasException("El cliente no tiene cuentas asociadas.");
         }
     }
 
     //verificar si un cliente ya tiene una cuenta con el mismo tipo de moneda (TipoMoneda) y tipo de cuenta (TipoCuenta) antes de permitir que se cree una nueva.
     public void validarTipoMonedaCuenta(TipoCuenta tipoCuenta, TipoMoneda tipoMoneda, Long dniTitular) throws TipoCuentaExistenteException {
-        CuentaDao cuentaDao = new CuentaDao();
         Set<Cuenta> cuentas = cuentaDao.findAllCuentasDelCliente(dniTitular);
         for (Cuenta cuenta: cuentas) {
             if (tipoCuenta.equals(cuenta.getTipoCuenta()) && tipoMoneda.equals(cuenta.getTipoMoneda())) {
@@ -82,9 +81,9 @@ public class ValidacionesServicios {
     //validar Operaciones
     //validar que las cuentas no sean de distinto tipo moneda y que no sean nulas
     public void validarCuentasOrigenDestino(Cuenta cuentaOrigen, Cuenta cuentaDestino) throws CuentaDistintaMonedaException, CuentaNoEncontradaException {
-        if (cuentaOrigen == null || cuentaDestino == null) {
-            throw new CuentaNoEncontradaException("Error: Una o ambas cuentas no existen.");
-        }
+//        if (cuentaOrigen == null || cuentaDestino == null) {
+//            throw new CuentaNoEncontradaException("Error: Una o ambas cuentas no existen.");
+//        }
         if (cuentaOrigen.getTipoMoneda() != cuentaDestino.getTipoMoneda()) {
             throw new CuentaDistintaMonedaException("Las monedas de origen y destino deben coincidir.");
         }
@@ -99,7 +98,7 @@ public class ValidacionesServicios {
     public void validarSaldoDisponible(Long cbu) throws CuentaTieneSaldoException {
         Cuenta cuenta = new CuentaDao().findCuenta(cbu);
         if (cuenta.getSaldo() > 0){
-            throw new CuentaTieneSaldoException("La cuenta tiene saldo disponible, no puede ser eliminada");
+                throw new CuentaTieneSaldoException("La cuenta tiene saldo disponible, no puede ser eliminada");
         }
     }
 
