@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.Clientes;
+package ar.edu.utn.frbb.tup.presentacion.controladores.Clientes;
 
 import ar.edu.utn.frbb.tup.excepciones.ClienteNoEncontradoException;
 import ar.edu.utn.frbb.tup.modelos.Cliente;
@@ -7,11 +7,9 @@ import ar.edu.utn.frbb.tup.presentacion.controladores.ControladorClientes;
 import ar.edu.utn.frbb.tup.servicios.ServicioClientes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

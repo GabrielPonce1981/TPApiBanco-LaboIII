@@ -16,3 +16,11 @@ CBU Origen, Fecha de operacion, Hora de operacion, Tipo de operacion, Monto
 50333761,2024-12-11,18:48:52,Transferencia enviada,350000.0
 89803929,2024-12-11,18:48:52,Transferencia recibida,350000.0
 86826701,2024-12-15,12:02:03,Deposito,100000.0
+50333761,2024-12-17,17:24:20,Transferencia enviada,1500.0
+89803929,2024-12-17,17:24:20,Transferencia recibida,1500.0
+50333761,2024-12-17,17:24:36,Transferencia enviada,2000001.0
+89803929,2024-12-17,17:24:36,Transferencia recibida,2000001.0
+50333761,2024-12-17,17:24:36,Comisión aplicada,400000.2000000002
+50333761,2024-12-17,17:32:33,Transferencia enviada,2000001.0
+89803929,2024-12-17,17:32:33,Transferencia recibida,2000001.0
+50333761,2024-12-17,17:32:33,Comisión aplicada,400000.2000000002

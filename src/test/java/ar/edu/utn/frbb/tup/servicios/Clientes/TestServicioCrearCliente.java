@@ -2,7 +2,6 @@ package ar.edu.utn.frbb.tup.servicios.Clientes;
 
 import ar.edu.utn.frbb.tup.excepciones.ClienteExistenteException;
 import ar.edu.utn.frbb.tup.excepciones.ClienteMenorDeEdadException;
-import ar.edu.utn.frbb.tup.excepciones.ClienteNoEncontradoException;
 import ar.edu.utn.frbb.tup.modelos.Cliente;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;

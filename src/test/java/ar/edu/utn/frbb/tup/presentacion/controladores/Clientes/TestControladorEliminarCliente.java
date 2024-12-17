@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.Clientes;
+package ar.edu.utn.frbb.tup.presentacion.controladores.Clientes;
 
 import ar.edu.utn.frbb.tup.excepciones.ClienteNoEncontradoException;
 import ar.edu.utn.frbb.tup.excepciones.ClienteTieneCuentasException;

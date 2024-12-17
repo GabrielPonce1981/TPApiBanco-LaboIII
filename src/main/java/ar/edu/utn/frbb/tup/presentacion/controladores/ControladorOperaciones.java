@@ -3,7 +3,6 @@ package ar.edu.utn.frbb.tup.presentacion.controladores;
 import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.Movimiento;
 import ar.edu.utn.frbb.tup.modelos.Operacion;
-import ar.edu.utn.frbb.tup.modelos.TipoMoneda;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaResponse;
 import ar.edu.utn.frbb.tup.presentacion.ValidacionesPresentacion;

@@ -5,7 +5,6 @@ import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.excepciones.CuentaTieneSaldoException;
 import ar.edu.utn.frbb.tup.excepciones.CuentasVaciasException;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
-import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
 import ar.edu.utn.frbb.tup.servicios.ServicioCuentas;
@@ -22,8 +21,6 @@ import static org.mockito.Mockito.*;
 public class TestServicioEliminarCuenta {
     @Mock
     private CuentaDao cuentaDao;
-    @Mock
-    private ClienteDao clienteDao;
     @Mock
     private MovimientosDao movimientosDao;
     @Mock

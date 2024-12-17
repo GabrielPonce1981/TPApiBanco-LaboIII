@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.Cuentas;
+package ar.edu.utn.frbb.tup.presentacion.controladores.Cuentas;
 
 import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.modelos.Cliente;

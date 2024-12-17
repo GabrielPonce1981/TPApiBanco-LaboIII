@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.operaciones;
+package ar.edu.utn.frbb.tup.presentacion.controladores.operaciones;
 
 import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.excepciones.MovimientosVaciosException;

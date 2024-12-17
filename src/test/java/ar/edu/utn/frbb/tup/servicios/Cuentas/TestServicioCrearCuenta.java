@@ -7,7 +7,6 @@ import ar.edu.utn.frbb.tup.modelos.Cliente;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
-import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.CuentaDto;
 import ar.edu.utn.frbb.tup.servicios.ServicioCuentas;
 import ar.edu.utn.frbb.tup.servicios.ValidacionesServicios;
@@ -27,8 +26,6 @@ public class TestServicioCrearCuenta {
     private CuentaDao cuentaDao;
     @Mock
     private ClienteDao clienteDao;
-    @Mock
-    private MovimientosDao movimientosDao;
     @Mock
     private ValidacionesServicios validacionesServicios;
     //InjectMocks para inyectar los mocks en el servicio a testear

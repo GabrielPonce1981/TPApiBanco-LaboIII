@@ -1,21 +1,10 @@
 package ar.edu.utn.frbb.tup.presentacion;
 
-import ar.edu.utn.frbb.tup.excepciones.CuentaDistintaMonedaException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
-import ar.edu.utn.frbb.tup.excepciones.CuentaSinDineroException;
-import ar.edu.utn.frbb.tup.excepciones.TipoCuentaExistenteException;
-import ar.edu.utn.frbb.tup.modelos.Cuenta;
-import ar.edu.utn.frbb.tup.modelos.TipoCuenta;
-import ar.edu.utn.frbb.tup.modelos.TipoMoneda;
-import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.ClienteDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.CuentaDto;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Set;
 
 @Component
 public class ValidacionesPresentacion {
@@ -54,26 +43,6 @@ public class ValidacionesPresentacion {
 
     }
 
-    public void validarTipoMoneda(String tipoMoneda) {
-        try {
-            // Convierto el String a TipoMoneda
-            TipoMoneda moneda = TipoMoneda.fromString(tipoMoneda);
-
-            // Valido que sea una moneda válida
-            if (!moneda.equals(TipoMoneda.PESOS) && !moneda.equals(TipoMoneda.DOLARES)) {
-                throw new IllegalArgumentException("El tipo de moneda debe ser 'PESOS' o 'DOLARES'.");
-            }
-        } catch (IllegalArgumentException e) {
-            // Si no se puede convertir, lanzamos una excepción
-            throw new IllegalArgumentException("El tipo de moneda ingresado no es válido. Debe ser 'PESOS' o 'DOLARES'.");
-        }
-    }
-
-    public void validarTiposMonedas(TipoMoneda tipoMonedaOrigen, TipoMoneda tipoMonedaDestino) throws IllegalArgumentException {
-        if (tipoMonedaOrigen != tipoMonedaDestino) {
-            throw new IllegalArgumentException("Las monedas de origen y destino deben coincidir.");
-        }
-    }
 
     public void validarIngresosDeCbu(Long cbuOrigen, Long cbuDestino) throws IllegalArgumentException {
         validarCbu(cbuOrigen);

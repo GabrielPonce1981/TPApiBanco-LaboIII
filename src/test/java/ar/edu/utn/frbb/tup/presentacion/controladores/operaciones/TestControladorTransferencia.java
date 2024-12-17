@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.operaciones;
+package ar.edu.utn.frbb.tup.presentacion.controladores.operaciones;
 
 import ar.edu.utn.frbb.tup.excepciones.*;
 import ar.edu.utn.frbb.tup.presentacion.DTOs.TransferenciaDto;
@@ -24,7 +24,6 @@ class TestControladorTransferencia {
     //inyecto los mock necesarios para el controlador
     @InjectMocks
     private ControladorOperaciones controladorOperaciones;
-
     //creo la instancias simuldas de las dependencias necesarias para el controlador
     @Mock
     private ServicioOperaciones servicioOperaciones;

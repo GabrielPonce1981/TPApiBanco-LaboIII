@@ -24,7 +24,7 @@ public class TestServicioDeposito {
     private MovimientosDao movimientosDao;
     @Mock
     private ValidacionesServicios validacionesServicios;
-    //InjectMocks para inyectar los mocks en el servicio a testear
+
     @InjectMocks
     private ServicioOperaciones servicioOperaciones;
 

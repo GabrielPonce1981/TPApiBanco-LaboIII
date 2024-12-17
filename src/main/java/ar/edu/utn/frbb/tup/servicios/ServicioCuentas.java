@@ -123,17 +123,6 @@ public class ServicioCuentas {
             throw new CuentaNoEncontradaException("El cliente no tiene ninguna cuenta con el CBU: " + cbu);
         }
 
-//        //Valido si el DNI tiene cuentas asociadas
-//        List<Long> cuentasCbu = cuentaDao.getRelacionesDni(dni);
-//        if (cuentasCbu.isEmpty()) {
-//            throw new CuentasVaciasException("No hay cuentas asociadas al cliente con DNI: " + dni);
-//        }
-
-//        //Funcion que devuelve la cuenta encontrada o null si no lo encontro. Solo devuelve las cuentas que tiene asocida el cliente
-//        Cuenta cuenta = cuentaDao.findCuentaDelCliente(cbu, dni);
-//
-
-
         //Valido si la cuenta tiene saldo, si no lanza excepcion
         validar.validarSaldoDisponible(cbu);
 

@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.Clientes;
+package ar.edu.utn.frbb.tup.presentacion.controladores.Clientes;
 
 import ar.edu.utn.frbb.tup.excepciones.ClientesVaciosException;
 import ar.edu.utn.frbb.tup.modelos.Cliente;
@@ -18,17 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-//La clase contiene un test que verifica que el método mostrarClientes() del controlador de clientes funcione correctamente.
 class TestControladorMostrarClientes {
 
-    //Inyecto los mocks necesarios en la clase
     @InjectMocks
     private ControladorClientes controladorClientes;
-    //Creo instancias simuladas de las dependencias necesarias
     @Mock
     private ServicioClientes servicioClientes;
 
-    //Método que se ejecuta antes de cada prueba, inicializando los mocks
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

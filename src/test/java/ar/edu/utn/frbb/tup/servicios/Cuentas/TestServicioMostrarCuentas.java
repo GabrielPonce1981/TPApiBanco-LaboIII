@@ -6,9 +6,7 @@ import ar.edu.utn.frbb.tup.modelos.Cliente;
 import ar.edu.utn.frbb.tup.modelos.Cuenta;
 import ar.edu.utn.frbb.tup.persistencia.ClienteDao;
 import ar.edu.utn.frbb.tup.persistencia.CuentaDao;
-import ar.edu.utn.frbb.tup.persistencia.MovimientosDao;
 import ar.edu.utn.frbb.tup.servicios.ServicioCuentas;
-import ar.edu.utn.frbb.tup.servicios.ValidacionesServicios;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,10 +24,6 @@ public class TestServicioMostrarCuentas {
     private CuentaDao cuentaDao;
     @Mock
     private ClienteDao clienteDao;
-    @Mock
-    private MovimientosDao movimientosDao;
-    @Mock
-    private ValidacionesServicios validacionesServicios;
 
     @InjectMocks
     private ServicioCuentas servicioCuentas;

@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.Cuentas;
+package ar.edu.utn.frbb.tup.presentacion.controladores.Cuentas;
 
 import ar.edu.utn.frbb.tup.excepciones.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.excepciones.ClienteNoEncontradoException;
@@ -8,11 +8,9 @@ import ar.edu.utn.frbb.tup.presentacion.controladores.ControladorCuentas;
 import ar.edu.utn.frbb.tup.servicios.ServicioCuentas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashSet;

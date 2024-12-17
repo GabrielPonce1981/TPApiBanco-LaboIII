@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-//Validaciones de clientes, cuentas y movimientos
 
 @Service
 public class ValidacionesServicios {
@@ -31,17 +30,16 @@ public class ValidacionesServicios {
         }
     }
 
-    //valido que el cliente no exista
     public void validarClienteExistente(ClienteDto clienteDto) throws ClienteExistenteException {
         if (clienteDao.findCliente(clienteDto.getDni()) != null){
             throw new ClienteExistenteException("Ya existe un cliente con el dni ingresado");
         }
     }
-     public void validarClienteNoExistente(Long dni) throws ClienteNoEncontradoException {
-         if (clienteDao.findCliente(dni) == null) {
-             throw new ClienteNoEncontradoException("No se encontro el cliente con el DNI: " + dni);
-         }
-     }
+    public void validarClienteNoExistente(Long dni) throws ClienteNoEncontradoException {
+        if (clienteDao.findCliente(dni) == null) {
+            throw new ClienteNoEncontradoException("No se encontro el cliente con el DNI: " + dni);
+        }
+    }
 
     //valido que el cliente no tenga cuentas asociadas antes de eliminarlo
     public void validarClienteSinCuentas(Long dni) throws ClienteTieneCuentasException {
@@ -80,14 +78,12 @@ public class ValidacionesServicios {
 
     //validar Operaciones
     //validar que las cuentas no sean de distinto tipo moneda y que no sean nulas
-    public void validarCuentasOrigenDestino(Cuenta cuentaOrigen, Cuenta cuentaDestino) throws CuentaDistintaMonedaException, CuentaNoEncontradaException {
-//        if (cuentaOrigen == null || cuentaDestino == null) {
-//            throw new CuentaNoEncontradaException("Error: Una o ambas cuentas no existen.");
-//        }
-        if (cuentaOrigen.getTipoMoneda() != cuentaDestino.getTipoMoneda()) {
+    public void validarCuentasOrigenDestino(Cuenta cuentaOrigen, Cuenta cuentaDestino) throws CuentaDistintaMonedaException {
+        if (!cuentaOrigen.getTipoMoneda().equals(cuentaDestino.getTipoMoneda())) {
             throw new CuentaDistintaMonedaException("Las monedas de origen y destino deben coincidir.");
         }
     }
+
 
     public void validarSaldo(Cuenta cuenta, double monto) throws CuentaSinDineroException {
         if (cuenta.getSaldo() < monto){
@@ -98,7 +94,7 @@ public class ValidacionesServicios {
     public void validarSaldoDisponible(Long cbu) throws CuentaTieneSaldoException {
         Cuenta cuenta = new CuentaDao().findCuenta(cbu);
         if (cuenta.getSaldo() > 0){
-                throw new CuentaTieneSaldoException("La cuenta tiene saldo disponible, no puede ser eliminada");
+            throw new CuentaTieneSaldoException("La cuenta tiene saldo disponible, no puede ser eliminada");
         }
     }
 
